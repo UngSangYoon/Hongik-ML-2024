@@ -1,7 +1,7 @@
 from datasets import load_dataset
 import json
-from tqdm import tqdm
 import os
+from p_tqdm import p_map
 
 def get_index(item, list):
     if item in list:
@@ -21,29 +21,9 @@ def format_to_6_decimal_places(number_list):
         formatted_number = round(number, 6)
         output_list.append(str(formatted_number))
     return output_list
+from p_tqdm import p_map
 
-ds = load_dataset("Hongik-ML-2024/processed-dataset")
-
-# 미리 생성해둔 object_list.json 로드 (After make_object_list.py run)
-with open('object_list.json', "r") as f:
-    object_list = json.load(f)
-
-train = ds['train']
-val = ds['validation']
-
-train_data_dir = './data/train'
-val_data_dir = './data/validation'
-
-os.makedirs(train_data_dir, exist_ok=True)
-os.makedirs(val_data_dir + '/images', exist_ok=True)
-os.makedirs(val_data_dir + '/labels', exist_ok=True)
-
-# train data 저장
-index = 0
-
-for train_data in tqdm(train):
-    # if index == 10000:
-    #      break
+def process_train_data(index, train_data, train_data_dir, object_list):
     # image 저장
     binary_data = train_data['image']
     with open(os.path.join(train_data_dir + f'/{index}.jpg'), 'wb') as file:
@@ -71,11 +51,8 @@ for train_data in tqdm(train):
 
     with open(os.path.join(train_data_dir + f'/{index}.txt'), "w") as file:
         file.write(label_text)
-    index += 1
-    
-# validation 저장
-index = 0
-for val_data in tqdm(val):
+
+def process_val_data(index, val_data, val_data_dir, object_list):
     # image 저장
     binary_data = val_data['image']
     with open(os.path.join(val_data_dir + f'/images/{index}.jpg'), 'wb') as file:
@@ -103,4 +80,26 @@ for val_data in tqdm(val):
 
     with open(os.path.join(val_data_dir + f'/labels/{index}.txt'), "w") as file:
         file.write(label_text)
-    index += 1
+
+if __name__ == "__main__":
+    ds = load_dataset("Hongik-ML-2024/processed-dataset")
+
+    # 미리 생성해둔 object_list.json 로드 (After make_object_list.py run)
+    with open('object_list.json', "r") as f:
+        object_list = json.load(f)
+
+    train = ds['train']
+    val = ds['validation']
+
+    train_data_dir = './data/train'
+    val_data_dir = './data/validation'
+
+    os.makedirs(train_data_dir, exist_ok=True)
+    os.makedirs(val_data_dir + '/images', exist_ok=True)
+    os.makedirs(val_data_dir + '/labels', exist_ok=True)
+
+    # train data 저장
+    p_map(process_train_data, range(len(train)), train, [train_data_dir]*len(train), [object_list]*len(train), num_cpus=8)
+
+    # validation 저장
+    p_map(process_val_data, range(len(val)), val, [val_data_dir]*len(val), [object_list]*len(val), num_cpus=8)
