@@ -1,0 +1,58 @@
+# Train/val/test sets as 1) dir: path/to/imgs, 2) file: path/to/imgs.txt, or 3) list: [path/to/imgs1, path/to/imgs2, ..]
+path: /Users/yun-ungsang/Desktop/4-1/기계학습심화/project # dataset root dir
+train: /Users/yun-ungsang/Desktop/4-1/기계학습심화/project/data/train/images # train images (relative to 'path') 4 images  
+val: /Users/yun-ungsang/Desktop/4-1/기계학습심화/project/data/validation/images # val images (relative to 'path') 4 images
+
+# Classes
+names:
+  0: Ball
+  1: Baseball Bat
+  2: Baseball Glove
+  3: Bench
+  4: Bicycle
+  5: Boat
+  6: Book
+  7: Bottle
+  8: Bus
+  9: Calendar
+  10: Camera
+  11: Can
+  12: Cap
+  13: Car
+  14: Cat
+  15: Chair
+  16: Clock
+  17: Cup
+  18: Dish
+  19: Dog
+  20: Flowerpot
+  21: Folding_Fan
+  22: Frame
+  23: Glasses
+  24: Handbag
+  25: Human
+  26: Kettle
+  27: Keyboard
+  28: Labacon
+  29: Ladle
+  30: Laptop
+  31: Mirror
+  32: Monitor
+  33: Motorcycle
+  34: Mouse
+  35: Pot
+  36: Racket
+  37: Remote
+  38: Scooter
+  39: Seesaw
+  40: Smart Phone
+  41: Stand lamp
+  42: Station
+  43: Suitcase
+  44: Swing
+  45: Table
+  46: Trash Can
+  47: Truck
+  48: Umbrella
+  49: Wallet
+  50: Weight
