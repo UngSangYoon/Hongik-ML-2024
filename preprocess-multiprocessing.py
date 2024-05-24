@@ -21,7 +21,6 @@ def format_to_6_decimal_places(number_list):
         formatted_number = round(number, 6)
         output_list.append(str(formatted_number))
     return output_list
-from p_tqdm import p_map
 
 def process_train_data(index, train_data, train_data_dir, object_list):
     # image 저장
