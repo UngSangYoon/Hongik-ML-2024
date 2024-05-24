@@ -31,8 +31,8 @@ with open('object_list.json', "r") as f:
 train = ds['train']
 val = ds['validation']
 
-train_data_dir = '.data/train'
-val_data_dir = '.data/validation'
+train_data_dir = './data/train'
+val_data_dir = './data/validation'
 
 # train data 저장
 index = 0
