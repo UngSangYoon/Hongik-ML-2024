@@ -35,7 +35,8 @@ train_data_dir = './data/train'
 val_data_dir = './data/validation'
 
 os.makedirs(train_data_dir, exist_ok=True)
-os.makedirs(val_data_dir, exist_ok=True)
+os.makedirs(val_data_dir + '/images', exist_ok=True)
+os.makedirs(val_data_dir + '/labels', exist_ok=True)
 
 # train data 저장
 index = 0
