@@ -1,7 +1,7 @@
 from datasets import load_dataset
 import json
 from tqdm import tqdm
-
+import os
 
 def get_index(item, list):
     if item in list:
@@ -34,6 +34,9 @@ val = ds['validation']
 train_data_dir = './data/train'
 val_data_dir = './data/validation'
 
+os.makedirs(train_data_dir, exist_ok=True)
+os.makedirs(val_data_dir, exist_ok=True)
+
 # train data 저장
 index = 0
 
@@ -42,7 +45,7 @@ for train_data in tqdm(train):
          break
     # image 저장
     binary_data = train_data['image']
-    with open(train_data_dir + f'/{index}.jpg', 'wb') as file:
+    with open(os.path.join(train_data_dir + f'/{index}.jpg'), 'wb') as file:
         file.write(binary_data)
 
     # label text 생성 후 저장 
@@ -65,7 +68,7 @@ for train_data in tqdm(train):
         label_text += text + '\n'
     label_text = label_text[:-1]
 
-    with open(train_data_dir + f'/{index}.txt', "w") as file:
+    with open(os.path.join(train_data_dir + f'/{index}.txt'), "w") as file:
         file.write(label_text)
     index += 1
     
@@ -74,7 +77,7 @@ index = 0
 for val_data in tqdm(val):
     # image 저장
     binary_data = val_data['image']
-    with open(val_data_dir + f'/images/{index}.jpg', 'wb') as file:
+    with open(os.path.join(val_data_dir + f'/images/{index}.jpg'), 'wb') as file:
         file.write(binary_data)
     
     # label text 생성 후 저장 
@@ -97,6 +100,6 @@ for val_data in tqdm(val):
         label_text += text + '\n'
     label_text = label_text[:-1]
 
-    with open(val_data_dir + f'/labels/{index}.txt', "w") as file:
+    with open(os.path.join(val_data_dir + f'/labels/{index}.txt'), "w") as file:
         file.write(label_text)
     index += 1
