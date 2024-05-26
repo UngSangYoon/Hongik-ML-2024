@@ -1,7 +1,24 @@
 from ultralytics import YOLO
-from datasets import load_dataset
+from multiprocessing import freeze_support
 
-model = YOLO("yolov9c.pt")
+if __name__ == '__main__':
+    freeze_support()
+    model = YOLO("yolov9c.pt")
 
-training_model = model.train(data = '/Users/yun-ungsang/Desktop/4-1/기계학습심화/project/data/data.yaml', epochs=1, imgsz=1024)
-training_model.save('./training_model')
+    training_model = model.train(
+    project='yolov9c_custom',
+    data='data/data.yaml',
+    imgsz=640,
+    save_period=1,
+    epochs=4,
+    device=0,
+    batch=12,
+    name='yolov9c_custom',
+    plots=True,
+    optimizer='AdamW',
+    cos_lr=True,
+    warmup_epochs=1,
+    
+    )
+    training_model.save('./training_model')
+    training_model.val()
