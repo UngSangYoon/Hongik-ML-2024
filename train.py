@@ -15,10 +15,8 @@ if __name__ == '__main__':
     batch=12,
     name='yolov9c_custom',
     plots=True,
-    optimizer='AdamW',
     cos_lr=True,
     warmup_epochs=1,
-    
     )
     training_model.save('./training_model')
     training_model.val()
