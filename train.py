@@ -10,7 +10,7 @@ if __name__ == '__main__':
     data='data/data.yaml',
     imgsz=640,
     save_period=1,
-    epochs=4,
+    epochs=2,
     device=0,
     batch=12,
     name='yolov9c_custom',
@@ -18,5 +18,5 @@ if __name__ == '__main__':
     cos_lr=True,
     warmup_epochs=1,
     )
-    training_model.save('./training_model')
-    training_model.val()
+    model.save('./training_model')
+    model.val(data='data/data.yaml')
