@@ -5,6 +5,7 @@ from ultralytics import YOLO
 import threading
 from multiprocessing import Manager
 import time
+from LLMSummarizer import LLMSummarizer
 
 class VideoTracker:
     def __init__(self, model_path, video_source, shared_data):
@@ -89,31 +90,32 @@ class VideoTracker:
             print("Data sent to shared memory:", dict_data)
 
 # Function to simulate the LLM reading from shared memory and generating a description
-def llm_reader(shared_data):
-    while True:
-        if 'tracking_data' in shared_data:
-            tracking_data = shared_data['tracking_data']
-            print("LLM is processing the tracking data...")
-            # Simulate LLM processing
-            time.sleep(5)  # Simulate some processing time
-            print("LLM generated description for the tracking data:", tracking_data)
-            del shared_data['tracking_data']  # Clear shared data after processing
+# def llm_reader(shared_data):
+#     while True:
+#         if 'tracking_data' in shared_data:
+#             tracking_data = shared_data['tracking_data']
+#             print("LLM is processing the tracking data...")
+#             # Simulate LLM processing
+#             time.sleep(5)  # Simulate some processing time
+#             print("LLM generated description for the tracking data:", tracking_data)
+#             del shared_data['tracking_data']  # Clear shared data after processing
 
 # Example usage
 if __name__ == "__main__":
     model_path = "./yolov9c.pt"
-    video_source = 0  # Use 0 for webcam, or replace with video file path
+    video_source = './test_video.mp4'  # Use 0 for webcam, or replace with video file path
 
     manager = Manager()
     shared_data = manager.dict()
 
+    llm_summarizer = LLMSummarizer(fps=30, size_x=640, size_y=360)
     tracker = VideoTracker(model_path, video_source, shared_data)
-
+    
     tracking_thread = threading.Thread(target=tracker.process_video_stream)
-    llm_thread = threading.Thread(target=llm_reader, args=(shared_data,))
+    llm_summarizer = threading.Thread(target=llm_summarizer.read, args=(shared_data,))
 
     tracking_thread.start()
-    llm_thread.start()
+    llm_summarizer.start()
 
     tracking_thread.join()
-    llm_thread.join()
+    llm_summarizer.join()
