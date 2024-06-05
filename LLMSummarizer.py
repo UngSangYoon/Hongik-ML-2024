@@ -20,7 +20,8 @@ class LLMSummarizer:
         self.fps = fps
         self.size_x = size_x
         self.size_y = size_y
-        self.output_file = 'output.txt' # long interval summary will be written to this file
+        self.short_interval_output_file = 'short_interval_output.txt' # short interval summaries will be written to this file
+        self.long_interval_output_file = 'long_interval_output.txt' # long interval summary will be written to this file
 
         self.SYSTEM_MESSAGE = """You are a highly advanced AI model specialized in summarizing CCTV footage. You receive a list of detected objects with their positions at different timestamps, and your task is to generate a concise, coherent, and comprehensive summary of the entire scene. The summary should accurately describe the movements and changes in the positions of objects.\n
 
@@ -92,10 +93,13 @@ When summarizing:
                 intervals = self.intervals_to_text(self.frame_summaries)
                 interval_summary = self.llm_generate(intervals)
                 print("Interval Summary:", interval_summary)
+                starttime = int(self.frame_summaries[0]['start_time'])
+                endtime = int(self.frame_summaries[-1]['end_time'])
                 self.interval_summaries.append({'interval_number': self.long_interval_number, 
-                                                'start_time': int(self.frame_summaries[0]['start_time']),
-                                                'end_time': int(self.frame_summaries[-1]['end_time']),
+                                                'start_time': starttime,
+                                                'end_time': endtime,
                                                 'text': interval_summary})
+                self.write(self.short_interval_output_file, interval_summary, starttime, endtime)
                 self.frame_summaries = []
                 self.long_interval_number += 1
                 self.interval_number = 1
@@ -108,11 +112,11 @@ When summarizing:
                 print("Long Interval Summary:", long_interval_summary)
                 starttime = int(self.interval_summaries[0]['start_time'])
                 endtime = int(self.interval_summaries[-1]['end_time'])
-                self.write(long_interval_summary, starttime, endtime)
+                self.write(self.long_interval_output_file, long_interval_summary, starttime, endtime)
                 self.interval_summaries = []
                 
-    def write(self, summary, starttime, endtime):
-        with open(self.output_file, 'wa') as f:
+    def write(self, output_file, summary, starttime, endtime):
+        with open(output_file, 'wa') as f:
             f.write(f"TIME: ({self.time_to_text(starttime)} to {self.time_to_text(endtime)})\n")
             f.write(summary)
             f.write("\n\n")
