@@ -31,7 +31,7 @@ class VideoTracker:
     def process_video_stream(self):
         cap = cv2.VideoCapture(self.video_source)
         interval = self.fps // 5  # 0.2초마다 처리
-        total_frames_per_segment = 10 * self.fps  # Total frames to process for each 10-second segment
+        total_frames_per_segment = 5 * self.fps  # Total frames to process for each 10-second segment
 
         while cap.isOpened():
             frame_count = 0
