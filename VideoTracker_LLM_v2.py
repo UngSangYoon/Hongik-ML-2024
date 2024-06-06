@@ -31,7 +31,7 @@ class VideoTracker:
     def process_video_stream(self):
         cap = cv2.VideoCapture(self.video_source)
         interval = self.fps // 5  # 0.2초마다 처리
-        total_frames_per_segment = 10 * self.fps  # Total frames to process for each 10-second segment
+        total_frames_per_segment = 5 * self.fps  # Total frames to process for each 5-second segment
 
         while cap.isOpened():
             frame_count = 0
@@ -58,7 +58,7 @@ class VideoTracker:
 
     def process_frame(self, frame):
         frame_info = {}
-        results = self.model.track(frame, persist=True, show=False, tracker="bytetrack.yaml")
+        results = self.model.track(frame, persist=True, show=True, tracker="bytetrack.yaml")
         boxes = results[0].boxes.xywh.cpu()
 
         if results[0].boxes.id is not None:
@@ -107,8 +107,8 @@ class VideoTracker:
 
 # Example usage
 if __name__ == "__main__":
-    model_path = "./yolov9c.pt"
-    video_source = 0 # Use 0 for webcam, or replace with video file path
+    model_path = "./yolov9c_custom.pt"
+    video_source = './test_video.mp4' # Use 0 for webcam, or replace with video file path
 
     manager = Manager()
     shared_data = manager.dict()
