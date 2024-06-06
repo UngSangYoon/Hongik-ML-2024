@@ -66,6 +66,7 @@ When summarizing:
             inputs = self.tokenizer(model_input, return_tensors="pt").to(self.device)
             outputs = self.model.generate(**inputs, max_length=2048)
             decoded_output = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
+            print(decoded_output)
         return decoded_output[len(model_input):].strip()
 
     def read(self, shared_data):
@@ -74,7 +75,7 @@ When summarizing:
         # 10 interval summaries -> 1 long interval summary
         while True:
             # 10 frames -> 1 framelist summary
-            if 'tracking_data' in shared_data and self.current_tracking_data < len(shared_data['tracking_data']['track_history']) - 10: # Ensure there are at least 10 new frames
+            if 'tracking_data' in shared_data and self.current_tracking_data < len(shared_data['tracking_data']['track_history']) - 5: # Ensure there are at least 10 new frames
                 print("LLM is processing the tracking data...")
                 track_history = shared_data['tracking_data']['track_history'][self.current_tracking_data:]
                 self.current_tracking_data = len(shared_data['tracking_data']['track_history'])
@@ -88,7 +89,7 @@ When summarizing:
                 self.interval_number += 1
 
             # 10 framelist summaries -> 1 interval summary
-            if len(self.frame_summaries) >= 10: # Process interval summaries every 10 tracked frame summaries
+            if len(self.frame_summaries) >= 5: # Process interval summaries every 10 tracked frame summaries
                 print("LLM is processing the interval summary...")
                 intervals = self.intervals_to_text(self.frame_summaries)
                 interval_summary = self.llm_generate(intervals)
@@ -105,7 +106,7 @@ When summarizing:
                 self.interval_number = 1
 
             # 10 interval summaries -> 1 long interval summary
-            if len(self.interval_summaries) >= 10: # Process long interval summaries every 10 interval summaries
+            if len(self.interval_summaries) >= 5: # Process long interval summaries every 10 interval summaries
                 print("LLM is processing the long interval summary...")
                 long_intervals = self.intervals_to_text(self.interval_summaries)
                 long_interval_summary = self.llm_generate(long_intervals)
