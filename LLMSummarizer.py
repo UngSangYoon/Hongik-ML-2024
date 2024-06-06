@@ -66,7 +66,6 @@ When summarizing:
             inputs = self.tokenizer(model_input, return_tensors="pt").to(self.device)
             outputs = self.model.generate(**inputs, max_length=2048)
             decoded_output = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
-            print(decoded_output)
         return decoded_output[len(model_input):].strip()
 
     def read(self, shared_data):
