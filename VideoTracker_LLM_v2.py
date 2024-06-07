@@ -78,7 +78,9 @@ class VideoTracker:
             if frame_info:
                 self.frame_buffer.append(frame_info)
             if len(self.frame_buffer) == 5:
+                frame_number = self.frame_buffer[-1]['frame_number']
                 best_frame = max(self.frame_buffer, key=lambda x: x['track_count'])
+                best_frame['frame_number'] = frame_number
                 del best_frame['track_count']
                 self.track_history.append(best_frame)
                 self.frame_buffer = []
