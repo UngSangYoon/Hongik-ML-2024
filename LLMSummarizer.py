@@ -20,6 +20,7 @@ class LLMSummarizer:
         self.fps = fps
         self.size_x = size_x
         self.size_y = size_y
+        self.frame_summaries_file = 'frame_summaries.txt' # frame summaries will be written to this file
         self.short_interval_output_file = 'short_interval_output.txt' # short interval summaries will be written to this file
         self.long_interval_output_file = 'long_interval_output.txt' # long interval summary will be written to this file
 
@@ -43,8 +44,9 @@ When summarizing:
 
     def frames_to_text(self, framelist):
         text = ""
+        first_frame_number = int(framelist[0]['frame_number'])
         for frame in framelist:
-            text += f"TIME: +{self.time_to_text(int(frame['frame_number']) // self.fps)}\n"
+            text += f"TIME: +{self.time_to_text((int(frame['frame_number']) - first_frame_number) // self.fps)}\n"
             for obj_id, obj_data in frame.items():
                 if obj_id != 'frame_number':
                     coordinate = (int(obj_data['coordinate'][0]/self.size_x*1024), int(obj_data['coordinate'][1]/self.size_y*576))
@@ -54,8 +56,9 @@ When summarizing:
 
     def intervals_to_text(self, interval_list):
         text = "## Interval Summaries:\n\n"
+        first_interval_number = interval_list[0]['interval_number']
         for interval in interval_list:
-            text += f"**INTERVAL {interval['interval_number']}: ({self.time_to_text(interval['start_time'])} to {self.time_to_text(interval['end_time'])})**\n\n"
+            text += f"**INTERVAL {interval['interval_number'] - first_interval_number + 1}: ({self.time_to_text(interval['start_time'])} to {self.time_to_text(interval['end_time'])})**\n\n"
             text += interval['text'] + "\n\n"
         return text
 
@@ -64,7 +67,8 @@ When summarizing:
         decoded_output = ""
         while decoded_output == "" or len(decoded_output[len(model_input):].strip()) < 50 or len(decoded_output[len(model_input):].strip()) > 500: # Ensure the output is not too short or long
             inputs = self.tokenizer(model_input, return_tensors="pt").to(self.device)
-            outputs = self.model.generate(**inputs, max_length=2048)
+            max_length_num = len(inputs['input_ids'][0]) + 200
+            outputs = self.model.generate(**inputs, max_length=max_length_num)
             decoded_output = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
             result = decoded_output[len(model_input):].strip()
             print("LLM Candidate Summary:", result)
@@ -74,12 +78,12 @@ When summarizing:
         return decoded_output[len(model_input):].strip()
 
     def read(self, shared_data):
-        # 5 frame (second) -> 1 framelist summary
-        # 5 framelist summaries -> 1 interval summary
-        # 5 interval summaries -> 1 long interval summary
+        # 10 frame (second) -> 1 framelist summary
+        # 10 framelist summaries -> 1 interval summary
+        # 10 interval summaries -> 1 long interval summary
         while True:
-            # 5 frames -> 1 framelist summary
-            if 'tracking_data' in shared_data and self.current_tracking_data <= len(shared_data['tracking_data']['track_history']) - 5: # Ensure there are at least 5 new frames
+            # 10 frames -> 1 framelist summary
+            if 'tracking_data' in shared_data and self.current_tracking_data <= len(shared_data['tracking_data']['track_history']) - 10: # Ensure there are at least 10 new frames
                 print("LLM is processing the tracking data...")
                 track_history = shared_data['tracking_data']['track_history'][self.current_tracking_data:]
                 if len(track_history) > 10: # Keep only the last 10 frames when there are more than 10 frames
@@ -89,14 +93,17 @@ When summarizing:
                 text = self.frames_to_text(track_history)
                 summary = self.llm_generate(text)
                 print("LLM Summary:", summary)
+                starttime = int(track_history[0]['frame_number'])//self.fps
+                endtime = int(track_history[-1]['frame_number'])//self.fps
                 self.frame_summaries.append({'interval_number': self.interval_number, 
-                                             'start_time': int(track_history[0]['frame_number'])//self.fps, 
-                                             'end_time': int(track_history[-1]['frame_number'])//self.fps, 
+                                             'start_time': starttime,
+                                             'end_time': endtime,
                                              'text': summary})
+                self.write(self.frame_summaries_file, summary, starttime, endtime)
                 self.interval_number += 1
 
-            # 5 framelist summaries -> 1 interval summary
-            if len(self.frame_summaries) >= 5: # Process interval summaries every 5 tracked frame summaries
+            # 10 framelist summaries -> 1 interval summary
+            if len(self.frame_summaries) >= 10: # Process interval summaries every 10 tracked frame summaries
                 print("LLM is processing the interval summary...")
                 intervals = self.intervals_to_text(self.frame_summaries)
                 interval_summary = self.llm_generate(intervals)
@@ -112,8 +119,8 @@ When summarizing:
                 self.long_interval_number += 1
                 self.interval_number = 1
 
-            # 5 interval summaries -> 1 long interval summary
-            if len(self.interval_summaries) >= 5: # Process long interval summaries every 5 interval summaries
+            # 10 interval summaries -> 1 long interval summary
+            if len(self.interval_summaries) >= 10: # Process long interval summaries every 10 interval summaries
                 print("LLM is processing the long interval summary...")
                 long_intervals = self.intervals_to_text(self.interval_summaries)
                 long_interval_summary = self.llm_generate(long_intervals)
