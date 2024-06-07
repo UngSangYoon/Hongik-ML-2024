@@ -103,11 +103,11 @@ class VideoTracker:
                 'track_history': self.track_history
             }
             self.shared_data['tracking_data'] = dict_data
-            print("Data sent to shared memory:", dict_data)
+            # print("Data sent to shared memory:", dict_data)
 
 # Example usage
 if __name__ == "__main__":
-    model_path = "./yolov9c_custom.pt"
+    model_path = "./yolov8n_nobox.pt"
     video_source = './nightvideo.mp4' # Use 0 for webcam, or replace with video file path
 
     manager = Manager()

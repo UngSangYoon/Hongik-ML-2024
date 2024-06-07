@@ -66,7 +66,9 @@ When summarizing:
             inputs = self.tokenizer(model_input, return_tensors="pt").to(self.device)
             outputs = self.model.generate(**inputs, max_length=2048)
             decoded_output = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
-            if '?' in decoded_output[len(model_input):].strip(): # Ensure the output does not contain any questions
+            result = decoded_output[len(model_input):].strip()
+            print("LLM Candidate Summary:", result)
+            if '?' in result or '\n\n' in result or 'TIME:' in result: # Ensure the output is not a question or 
                 decoded_output = ''
                 continue
         return decoded_output[len(model_input):].strip()
@@ -77,10 +79,13 @@ When summarizing:
         # 5 interval summaries -> 1 long interval summary
         while True:
             # 5 frames -> 1 framelist summary
-            if 'tracking_data' in shared_data and self.current_tracking_data < len(shared_data['tracking_data']['track_history']) - 5: # Ensure there are at least 5 new frames
+            if 'tracking_data' in shared_data and self.current_tracking_data <= len(shared_data['tracking_data']['track_history']) - 5: # Ensure there are at least 5 new frames
                 print("LLM is processing the tracking data...")
                 track_history = shared_data['tracking_data']['track_history'][self.current_tracking_data:]
+                if len(track_history) > 10: # Keep only the last 10 frames when there are more than 10 frames
+                    track_history = track_history[-10:]
                 self.current_tracking_data = len(shared_data['tracking_data']['track_history'])
+                print(f'current history number of tracking data: {max(self.current_tracking_data, len(shared_data["tracking_data"]["track_history"]) - 10)}')
                 text = self.frames_to_text(track_history)
                 summary = self.llm_generate(text)
                 print("LLM Summary:", summary)
@@ -119,7 +124,7 @@ When summarizing:
                 self.interval_summaries = []
                 
     def write(self, output_file, summary, starttime, endtime):
-        with open(output_file, 'wa') as f:
+        with open(output_file, 'a') as f:
             f.write(f"TIME: ({self.time_to_text(starttime)} to {self.time_to_text(endtime)})\n")
             f.write(summary)
             f.write("\n\n")
