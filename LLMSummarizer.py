@@ -62,7 +62,7 @@ When summarizing:
     def llm_generate(self, text):
         model_input = self.SYSTEM_MESSAGE + text
         decoded_output = ""
-        while len(decoded_output[len(model_input):].strip()) < 50 or len(decoded_output[len(model_input):].strip()) > 500: # Ensure the output is not too short or long
+        while decoded_output == "" or len(decoded_output[len(model_input):].strip()) < 50 or len(decoded_output[len(model_input):].strip()) > 500: # Ensure the output is not too short or long
             inputs = self.tokenizer(model_input, return_tensors="pt").to(self.device)
             outputs = self.model.generate(**inputs, max_length=2048)
             decoded_output = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
