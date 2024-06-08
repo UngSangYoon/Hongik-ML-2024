@@ -1,0 +1,15 @@
+TIME: (1 sec to 2 min 17 sec)
+A car (ID: 42) enters at 4 minutes 7 seconds and makes a left turn, driving out of the scene from 4 minutes 9 seconds.
+
+TIME: (2 min 54 sec to 10 min 3 sec)
+The scene begins with a car (ID: 222) traveling from the top left corner to the bottom right corner of the scene, then disappears in the bottom right corner.
+
+TIME: (11 min 7 sec to 16 min 20 sec)
+B) A child (ID: 375) enters the frame from left and walks towards the center of the scene, stopping briefly to interact with the cars. The child then turns left, exits the frame, and disappears.
+
+TIME: (16 min 27 sec to 20 min 40 sec)
+A Human (ID: 718) walks from left to right, and a human (ID: 723) drives from left to right through the scene, while a car (ID: 414) is observed moving erratically from left to right, then back to left, and finally settle in the center of the frame.
+
+TIME: (20 min 41 sec to 23 min 20 sec)
+The footage also shows a truck (ID: 439) that drives from right to left across the scene before exiting. Various other vehicles appear throughout the footage, including cars (IDs: 431, 481, 483, 484) and a bus (ID: 483), all traveling from left to right before exiting.  Although the scene features a variety of vehicles moving around, the majority of the footage focuses on a single car (ID: 482) moving slowly from left to right.
+

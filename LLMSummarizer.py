@@ -75,6 +75,9 @@ When summarizing:
             if '?' in result or '\n\n' in result or 'TIME:' in result: # Ensure the output is not a question or 
                 decoded_output = ''
                 continue
+            if 'ID' not in result: # Ensure the output contains object IDs
+                decoded_output = ''
+                continue
         return decoded_output[len(model_input):].strip()
 
     def read(self, shared_data):

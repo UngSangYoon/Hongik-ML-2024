@@ -109,7 +109,7 @@ class VideoTracker:
 
 # Example usage
 if __name__ == "__main__":
-    model_path = "./yolov8n_nobox.pt"
+    model_path = "./yolov8n_adamw.pt"
     video_source = './nightvideo.mp4' # Use 0 for webcam, or replace with video file path
 
     manager = Manager()
