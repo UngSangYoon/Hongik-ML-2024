@@ -45,16 +45,18 @@ YOLO 모델을 활용한 객체 탐지와 Fine-Tuned LLM을 통해 야간 감시
 - 추론 속도: 실시간 요약은 GPU 성능에 제한을 받음.
 - 데이터 문제: 생성된 학습 데이터로 인해 텍스트 요약에서 간혹 상상된 정보가 포함됨.
 - 저조한 정확도: 영상 내 환경을 담지 못함. 추적된 객체의 좌표만으로 상황을 요약하기 때문에 정확한 상황 설명에 한계
-  
-## 🤝 기여자
-윤웅상 (Yolo 학습 데이터 전처리, Video to Text Processing, CV-Language Model integration)
-박채연 (Yolo training Hyperparameter Tuning)
-오현수 (Yolo training Hyperparameter Tuning)
-유세은 (Yolo training Hyperparameter Tuning)
-정진홍 (LLM LoRA Training, CV-Language Model integration)
 
 ## 🔮 향후 방향
 - 저조도 데이터셋 개선을 통한 탐지 정확도 향상.
 - 상황 요약에 필요한 더 많은 정보를 처리.
 - 언어 모델의 추론 속도 최적화.
 - 완전 자동화된 CCTV 감시 시스템으로 확장 가능성 탐구.
+- 
+## 🤝 기여자
+- 윤웅상 (Yolo Training data preprocessing, Video to Text Processing, CV-Language Model integration)
+- 정진홍 (LLM Traing data preprocessing, Training Data Generation(By Gemini Flash model), LLM Training, CV-Language Model integration)
+- 박채연 (Yolo training Hyperparameter Tuning)
+- 오현수 (Yolo training Hyperparameter Tuning)
+- 유세은 (Yolo training Hyperparameter Tuning)
+
+## [프로젝트 발표 영상](https://youtu.be/zRkAB4p7g0k?si=ApTYE96mgMpkHh0h)
