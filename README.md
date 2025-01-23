@@ -28,7 +28,7 @@ YOLO 모델을 활용한 객체 탐지와 Fine-Tuned LLM을 통해 야간 감시
    - 멀티프로세싱을 활용하여 YOLO와 sLLM 병렬 실행.
    - 대표 프레임에서 요약 데이터를 생성하고 간략한 출력 파일에 저장.
   
-## 📊 결과
+## 🤖 모델
 - [Trained YOLOv8n](https://huggingface.co/Hongik-ML-2024/yolov8n-all_data-10_epochs-AdamW)
   - 최고 mAP를 기록한 모델: AdamW 옵티마이저를 사용한 YOLOv8n
   - 성능
