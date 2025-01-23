@@ -29,8 +29,8 @@ YOLO 모델을 활용한 객체 탐지와 Fine-Tuned LLM을 통해 야간 감시
    - 대표 프레임에서 요약 데이터를 생성하고 간략한 출력 파일에 저장.
   
 ## 📊 결과
-- Trained YOLOv8n
-  - [최고 mAP를 기록한 모델: AdamW 옵티마이저를 사용한 YOLOv8n](https://huggingface.co/Hongik-ML-2024/yolov8n-all_data-10_epochs-AdamW)
+- [Trained YOLOv8n](https://huggingface.co/Hongik-ML-2024/yolov8n-all_data-10_epochs-AdamW)
+  - 최고 mAP를 기록한 모델: AdamW 옵티마이저를 사용한 YOLOv8n
   - 성능
     - 0.2 seconds (5 frame per second) 단위로 이미지 객체 탐지.
     - 객체 ID를 통해 동일 객체 추적.
