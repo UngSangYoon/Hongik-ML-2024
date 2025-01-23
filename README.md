@@ -52,7 +52,7 @@ YOLO 모델을 활용한 객체 탐지와 Fine-Tuned LLM을 통해 야간 감시
 - 상황 요약에 필요한 더 많은 정보를 처리.
 - 언어 모델의 추론 속도 최적화.
 - 완전 자동화된 CCTV 감시 시스템으로 확장 가능성 탐구.
-- 
+  
 ## 🤝 기여자
 - 윤웅상 (Yolo Training data preprocessing, Video to Text Processing, CV-Language Model integration)
 - 정진홍 (LLM Traing data preprocessing, Training Data Generation(By Gemini Flash model), LLM Training)
