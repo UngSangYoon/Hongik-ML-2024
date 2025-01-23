@@ -55,7 +55,7 @@ YOLO 모델을 활용한 객체 탐지와 Fine-Tuned LLM을 통해 야간 감시
 - 
 ## 🤝 기여자
 - 윤웅상 (Yolo Training data preprocessing, Video to Text Processing, CV-Language Model integration)
-- 정진홍 (LLM Traing data preprocessing, Training Data Generation(By Gemini Flash model), LLM Training, CV-Language Model integration)
+- 정진홍 (LLM Traing data preprocessing, Training Data Generation(By Gemini Flash model), LLM Training)
 - 박채연 (Yolo training Hyperparameter Tuning)
 - 오현수 (Yolo training Hyperparameter Tuning)
 - 유세은 (Yolo training Hyperparameter Tuning)
