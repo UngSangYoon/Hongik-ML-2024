@@ -1,7 +1,8 @@
 # 저조도 CCTV 영상에서의 객체 탐지 및 상황 요약 🚦🔍
-
 본 프로젝트는 컴퓨터 비전(CV)과 자연어 처리(NLP)를 결합하여 저조도 CCTV 영상에서 실시간 객체 탐지 및 상황 요약을 가능하게 합니다.
 YOLO 모델을 활용한 객체 탐지와 Fine-Tuned LLM을 통해 야간 감시 작업에 효율적이고 해석 가능한 결과를 제공합니다.
+
+## [📹 프로젝트 발표 영상](https://youtu.be/zRkAB4p7g0k?si=ApTYE96mgMpkHh0h)
 
 ## 🎯 프로젝트 배경
 저조도 CCTV 영상은 특정 순간의 사건을 실시간으로 파악하기 어려운 문제를 가지고 있습니다. 이를 해결하기 위해 다음 두 가지 목표를 설정하였습니다:
@@ -58,5 +59,3 @@ YOLO 모델을 활용한 객체 탐지와 Fine-Tuned LLM을 통해 야간 감시
 - 박채연 (Yolo training Hyperparameter Tuning)
 - 오현수 (Yolo training Hyperparameter Tuning)
 - 유세은 (Yolo training Hyperparameter Tuning)
-
-## [프로젝트 발표 영상](https://youtu.be/zRkAB4p7g0k?si=ApTYE96mgMpkHh0h)
